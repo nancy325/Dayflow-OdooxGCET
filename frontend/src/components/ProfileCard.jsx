@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
+import "./ProfileCard.css";
 
 function ProfileCard({ role }) {
   const { user } = useAuth();
@@ -65,19 +66,22 @@ function ProfileCard({ role }) {
     }
   };
 
-  if (loading) return <div>Loading profile...</div>;
-  if (error) return <div style={{ color: "red" }}>{error}</div>;
+  if (loading) return <div className="profile-card-loading">Loading profile...</div>;
+  if (error) return <div className="profile-card-error">{error}</div>;
 
   return (
-    <div className="card">
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <h3>Profile Information</h3>
-        <button onClick={() => (editMode ? saveProfile() : setEditMode(true))}>
+    <div className="profile-card">
+      <div className="profile-card-header">
+        <h3 className="profile-card-title">Profile Information</h3>
+        <button 
+          className="profile-card-button"
+          onClick={() => (editMode ? saveProfile() : setEditMode(true))}
+        >
           {editMode ? "Save" : "Edit"}
         </button>
       </div>
 
-      <div style={{ marginTop: "16px" }}>
+      <div className="profile-card-fields">
         <ProfileField
           label="Name"
           name="name"
@@ -123,20 +127,20 @@ function ProfileCard({ role }) {
 
 function ProfileField({ label, name, value, editMode, onChange }) {
   return (
-    <div style={{ marginBottom: "12px" }}>
-      <label style={{ fontSize: "13px", color: "#6b7280" }}>
+    <div className="profile-field">
+      <label className="profile-field-label">
         {label}
       </label>
 
       {editMode ? (
         <input
+          className="profile-field-input"
           name={name}
           value={value}
           onChange={onChange}
-          style={{ marginTop: "4px" }}
         />
       ) : (
-        <p style={{ marginTop: "4px", fontWeight: "500" }}>
+        <p className={`profile-field-value ${!value ? 'profile-field-value-empty' : ''}`}>
           {value || "—"}
         </p>
       )}

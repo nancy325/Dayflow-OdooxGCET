@@ -15,7 +15,7 @@ function Login() {
     setLoading(true);
     setError("");
     try {
-      const res = await fetch("/auth/login", {
+      const res = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
@@ -57,13 +57,6 @@ function Login() {
           {loading ? "Logging in..." : "Login"}
         </button>
         {error && <div style={{ color: "red", marginTop: 8 }}>{error}</div>}
-
-        <p
-          style={{ marginTop: "12px", cursor: "pointer", color: "#4f46e5" }}
-          onClick={() => navigate("/register")}
-        >
-          New user? Register
-        </p>
       </div>
     </div>
   );

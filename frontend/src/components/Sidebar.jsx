@@ -1,4 +1,5 @@
 import { NavLink } from "react-router-dom";
+import "./Sidebar.css";
 
 function Sidebar({ items }) {
   return (
@@ -7,12 +8,7 @@ function Sidebar({ items }) {
         <NavLink
           key={index}
           to={item.path}
-          className="sidebar-item"
-          style={({ isActive }) => ({
-            background: isActive ? "#eef2ff" : "transparent",
-            color: isActive ? "#4338ca" : "#1f2937",
-            display: "block",
-          })}
+          className={({ isActive }) => `sidebar-item ${isActive ? 'active' : ''}`}
         >
           {item.label}
         </NavLink>

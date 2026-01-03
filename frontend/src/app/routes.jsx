@@ -2,7 +2,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 /* Auth */
 import Login from "../auth/Login";
-import Register from "../auth/Register";
 
 /* Protection */
 import ProtectedRoute from "./ProtectedRoute";
@@ -28,7 +27,6 @@ function AppRoutes() {
       <Routes>
         {/* ================= PUBLIC ROUTES ================= */}
         <Route path="/" element={<Login />} />
-        <Route path="/register" element={<Register />} />
 
         {/* ================= EMPLOYEE ROUTES ================= */}
         <Route

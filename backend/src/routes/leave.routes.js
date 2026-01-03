@@ -1,8 +1,20 @@
 import express from "express";
 import { protect } from "../middleware/auth.middleware.js";
-import { applyLeave, getLeaves, updateLeave } from "../controllers/leave.controller.js";
+import { authorizeRoles } from "../middleware/role.middleware.js";
+import { applyLeave, getLeaves, getAllLeaves, updateLeave } from "../controllers/leave.controller.js";
 const router = express.Router();
+
+// Employee: apply for leave
 router.post("/", protect, applyLeave);
+
+// Employee: get own leaves
+// Admin/HR: get all leaves
 router.get("/", protect, getLeaves);
-router.put("/:id", protect, updateLeave);
+
+// Admin/HR: get all leaves (explicit endpoint)
+router.get("/all", protect, authorizeRoles("hr", "admin"), getAllLeaves);
+
+// Admin/HR: approve/reject leave
+router.put("/:id", protect, authorizeRoles("hr", "admin"), updateLeave);
+
 export default router;

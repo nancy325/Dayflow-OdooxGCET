@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+
 function Register() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
@@ -17,7 +18,7 @@ function Register() {
     setLoading(true);
     setError("");
     try {
-      const res = await fetch("/auth/register", {
+      const res = await fetch("/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password, role }),
