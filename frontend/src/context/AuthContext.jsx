@@ -12,8 +12,8 @@ export function AuthProvider({ children }) {
     }
   }, []);
 
-  const login = (role) => {
-    const userData = { role };
+  const login = (role, token) => {
+    const userData = { role, token };
     setUser(userData);
     localStorage.setItem("dayflow_user", JSON.stringify(userData));
   };

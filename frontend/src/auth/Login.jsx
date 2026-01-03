@@ -8,22 +8,29 @@ function Login() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  const handleLogin = () => {
-    const users =
-      JSON.parse(localStorage.getItem("dayflow_users")) || [];
-
-    const user = users.find(
-      (u) => u.email === email && u.password === password
-    );
-
-    if (!user) {
-      alert("Invalid credentials");
-      return;
+  const handleLogin = async () => {
+    setLoading(true);
+    setError("");
+    try {
+      const res = await fetch("/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.msg || "Login failed");
+      }
+      login(data.role, data.token);
+      navigate(`/${data.role}/dashboard`);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
     }
-
-    login(user.role);
-    navigate(`/${user.role}/dashboard`);
   };
 
   return (
@@ -46,9 +53,10 @@ function Login() {
           style={inputStyle}
         />
 
-        <button style={{ width: "100%" }} onClick={handleLogin}>
-          Login
+        <button style={{ width: "100%" }} onClick={handleLogin} disabled={loading}>
+          {loading ? "Logging in..." : "Login"}
         </button>
+        {error && <div style={{ color: "red", marginTop: 8 }}>{error}</div>}
 
         <p
           style={{ marginTop: "12px", cursor: "pointer", color: "#4f46e5" }}

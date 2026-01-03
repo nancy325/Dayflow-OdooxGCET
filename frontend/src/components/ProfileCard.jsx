@@ -1,32 +1,72 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useAuth } from "../context/AuthContext";
 
 function ProfileCard({ role }) {
-  const storageKey = `profile_${role}`;
-
-  const defaultProfile = {
+  const { user } = useAuth();
+  const [profile, setProfile] = useState({
     name: "",
     email: "",
     department: "",
     phone: "",
     designation: role === "employee" ? "Employee" : "HR/Admin",
-  };
-
-  const [profile, setProfile] = useState(() => {
-    return (
-      JSON.parse(localStorage.getItem(storageKey)) || defaultProfile
-    );
   });
-
   const [editMode, setEditMode] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  // Replace with actual token logic if available
+  const token = user && user.token ? user.token : null;
+
+  useEffect(() => {
+    async function fetchProfile() {
+      setLoading(true);
+      setError("");
+      try {
+        const res = await fetch("/api/profile/me", {
+          headers: {
+            "Content-Type": "application/json",
+            ...(token ? { Authorization: `Bearer ${token}` } : {}),
+          },
+        });
+        if (!res.ok) throw new Error("Failed to fetch profile");
+        const data = await res.json();
+        setProfile((prev) => ({ ...prev, ...data }));
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchProfile();
+    // eslint-disable-next-line
+  }, []);
 
   const handleChange = (e) => {
     setProfile({ ...profile, [e.target.name]: e.target.value });
   };
 
-  const saveProfile = () => {
-    localStorage.setItem(storageKey, JSON.stringify(profile));
-    setEditMode(false);
+  const saveProfile = async () => {
+    setError("");
+    try {
+      const res = await fetch("/api/profile/me", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        body: JSON.stringify(profile),
+      });
+      if (!res.ok) throw new Error("Failed to update profile");
+      const data = await res.json();
+      setProfile((prev) => ({ ...prev, ...data }));
+      setEditMode(false);
+    } catch (err) {
+      setError(err.message);
+    }
   };
+
+  if (loading) return <div>Loading profile...</div>;
+  if (error) return <div style={{ color: "red" }}>{error}</div>;
 
   return (
     <div className="card">

@@ -6,26 +6,33 @@ function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("employee");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  const handleRegister = () => {
+  const handleRegister = async () => {
     if (!email || !password) {
       alert("All fields required");
       return;
     }
-
-    const users =
-      JSON.parse(localStorage.getItem("dayflow_users")) || [];
-
-    if (users.find((u) => u.email === email)) {
-      alert("User already exists");
-      return;
+    setLoading(true);
+    setError("");
+    try {
+      const res = await fetch("/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password, role }),
+      });
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.msg || "Registration failed");
+      }
+      alert("Registration successful");
+      navigate("/");
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
     }
-
-    users.push({ email, password, role });
-    localStorage.setItem("dayflow_users", JSON.stringify(users));
-
-    alert("Registration successful");
-    navigate("/");
   };
 
   return (
@@ -58,9 +65,10 @@ function Register() {
           <option value="admin">Admin</option>
         </select>
 
-        <button style={{ width: "100%" }} onClick={handleRegister}>
-          Register
+        <button style={{ width: "100%" }} onClick={handleRegister} disabled={loading}>
+          {loading ? "Registering..." : "Register"}
         </button>
+        {error && <div style={{ color: "red", marginTop: 8 }}>{error}</div>}
 
         <p
           style={{ marginTop: "12px", cursor: "pointer", color: "#4f46e5" }}
