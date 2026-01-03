@@ -1,0 +1,32 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+.dashboard-welcome {
+  margin-bottom: 32px;
+  padding: 24px;
+  background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
+  border-radius: 12px;
+  color: white;
+  box-shadow: 0 4px 20px rgba(79, 70, 229, 0.3);
+}
+
+.dashboard-welcome .page-title {
+  color: white;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.dashboard-welcome .page-title i {
+  font-size: 32px;
+  opacity: 0.9;
+}
+
+.dashboard-welcome .page-subtitle {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 16px;
+  margin: 0;
+}
+

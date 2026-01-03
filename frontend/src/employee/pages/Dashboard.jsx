@@ -2,10 +2,12 @@
 import { useEffect, useState } from "react";
 import EmployeeLayout from "../../layouts/EmployeeLayout";
 import { useAuth } from "../../context/AuthContext";
+import "./Dashboard.css";
 
 function EmployeeDashboard() {
   const { user } = useAuth();
   const [summary, setSummary] = useState({ attendanceCount: 0, leaveCount: 0, payroll: null });
+  const [profile, setProfile] = useState(null);
   const [employees, setEmployees] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -17,8 +19,14 @@ function EmployeeDashboard() {
       setError("");
       setLoading(true);
       try {
-        const [summaryRes, employeesRes] = await Promise.all([
+        const [summaryRes, profileRes, employeesRes] = await Promise.all([
           fetch("/api/dashboard/employee", {
+            headers: {
+              "Content-Type": "application/json",
+              ...(token ? { Authorization: `Bearer ${token}` } : {}),
+            },
+          }),
+          fetch("/api/profile/me", {
             headers: {
               "Content-Type": "application/json",
               ...(token ? { Authorization: `Bearer ${token}` } : {}),
@@ -32,11 +40,18 @@ function EmployeeDashboard() {
           })
         ]);
         if (!summaryRes.ok) throw new Error("Failed to fetch dashboard summary");
-        if (!employeesRes.ok) throw new Error("Failed to fetch employee list");
         const summaryData = await summaryRes.json();
-        const employeesData = await employeesRes.json();
         setSummary(summaryData);
-        setEmployees(employeesData);
+        
+        if (profileRes.ok) {
+          const profileData = await profileRes.json();
+          setProfile(profileData);
+        }
+        
+        if (employeesRes.ok) {
+          const employeesData = await employeesRes.json();
+          setEmployees(employeesData);
+        }
       } catch (err) {
         setError(err.message);
       } finally {
@@ -46,10 +61,23 @@ function EmployeeDashboard() {
     if (token) fetchDashboard();
   }, [token]);
 
+  const getGreeting = () => {
+    const hour = new Date().getHours();
+    if (hour < 12) return "Good Morning";
+    if (hour < 17) return "Good Afternoon";
+    return "Good Evening";
+  };
+
+  const employeeName = profile?.name || user?.email || "Employee";
+
   return (
     <EmployeeLayout>
-      <h2 className="page-title">Employee Dashboard</h2>
-      <p className="page-subtitle">Your daily work overview</p>
+      <div className="dashboard-welcome">
+        <h2 className="page-title">
+          <i className="fas fa-hand-sparkles"></i> {getGreeting()}, {employeeName}!
+        </h2>
+        <p className="page-subtitle">Here's your daily work overview</p>
+      </div>
 
       {loading ? (
         <p>Loading...</p>
@@ -79,27 +107,6 @@ function EmployeeDashboard() {
             </div>
           </div>
 
-          <div className="card" style={{ marginTop: 24 }}>
-            <h3>Employee List</h3>
-            <div style={{ overflowX: "auto" }}>
-              <table style={{ width: "100%", borderCollapse: "collapse" }}>
-                <thead>
-                  <tr>
-                    <th style={{ borderBottom: "1px solid #ccc", textAlign: "left", padding: 8 }}>Email</th>
-                    <th style={{ borderBottom: "1px solid #ccc", textAlign: "left", padding: 8 }}>Role</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {employees.map((emp) => (
-                    <tr key={emp._id}>
-                      <td style={{ padding: 8 }}>{emp.email}</td>
-                      <td style={{ padding: 8 }}>{emp.role}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
         </>
       )}
     </EmployeeLayout>

@@ -171,13 +171,15 @@ function Employees() {
           <p className="page-subtitle">Manage and organize your workforce</p>
         </div>
         <button 
-          className="btn btn-primary btn-icon"
+          className="btn-add-employee"
           onClick={() => {
             resetForm();
             setShowForm(true);
           }}
+          disabled={loading}
         >
-          <i className="fas fa-plus"></i> Add Employee
+          <i className="fas fa-user-plus"></i>
+          <span>Add New Employee</span>
         </button>
       </div>
 
@@ -343,13 +345,14 @@ function Employees() {
             <i className="fas fa-users-slash"></i>
             <p>No employees found.</p>
             <button 
-              className="btn btn-primary"
+              className="btn-add-employee"
               onClick={() => {
                 resetForm();
                 setShowForm(true);
               }}
             >
-              <i className="fas fa-plus"></i> Add First Employee
+              <i className="fas fa-user-plus"></i>
+              <span>Add First Employee</span>
             </button>
           </div>
         ) : (

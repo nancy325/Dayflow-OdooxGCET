@@ -49,18 +49,28 @@ function Attendance() {
           <table style={{ width: "100%", borderCollapse: "collapse" }}>
             <thead>
               <tr>
-                <th style={{ borderBottom: "1px solid #ccc", textAlign: "left", padding: 8 }}>Employee</th>
+                <th style={{ borderBottom: "1px solid #ccc", textAlign: "left", padding: 8 }}>Employee ID</th>
+                <th style={{ borderBottom: "1px solid #ccc", textAlign: "left", padding: 8 }}>Employee Name</th>
                 <th style={{ borderBottom: "1px solid #ccc", textAlign: "left", padding: 8 }}>Role</th>
                 <th style={{ borderBottom: "1px solid #ccc", textAlign: "left", padding: 8 }}>Date</th>
+                <th style={{ borderBottom: "1px solid #ccc", textAlign: "left", padding: 8 }}>Time</th>
                 <th style={{ borderBottom: "1px solid #ccc", textAlign: "left", padding: 8 }}>Status</th>
               </tr>
             </thead>
             <tbody>
               {records.map((rec) => (
                 <tr key={rec._id}>
-                  <td style={{ padding: 8 }}>{rec.userId?.email || rec.userId}</td>
+                  <td style={{ padding: 8, fontFamily: "monospace", fontSize: "12px", color: "#6b7280" }}>
+                    {rec.employeeId || rec.userId?._id || rec.userId || "-"}
+                  </td>
+                  <td style={{ padding: 8 }}>
+                    {rec.userId?.profile?.name || rec.userId?.email || "-"}
+                  </td>
                   <td style={{ padding: 8 }}>{rec.userId?.role || "-"}</td>
-                  <td style={{ padding: 8 }}>{rec.date}</td>
+                  <td style={{ padding: 8 }}>{rec.formattedDate || rec.date || "-"}</td>
+                  <td style={{ padding: 8, fontFamily: "monospace", fontSize: "13px" }}>
+                    {rec.formattedTime || "-"}
+                  </td>
                   <td style={{ padding: 8 }}>{rec.status}</td>
                 </tr>
               ))}
