@@ -157,7 +157,7 @@ npm run dev
 
 ---
 
-## 🏆 Hackathon Notes
+## 🏆 Highlights
 - Built end‑to‑end under time constraints
 - Real‑world RBAC implementation
 - Cloud database (MongoDB Atlas)
