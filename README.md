@@ -1,75 +1,169 @@
-# 🚀 Dayflow – Smart HRMS
+# 🚀 Dayflow — Human Resource Management System (HRMS)
 
-**Every workday, perfectly aligned.**
+![Status](https://img.shields.io/badge/Status-Active-success)
+![Hackathon](https://img.shields.io/badge/Hackathon-Project-orange)
+![Stack](https://img.shields.io/badge/Stack-MERN-green)
+![Auth](https://img.shields.io/badge/Auth-JWT-blue)
+![Database](https://img.shields.io/badge/Database-MongoDB-brightgreen)
+![Build](https://img.shields.io/github/actions/workflow/status/your-org/dayflow/ci.yml?label=Build)
+![License](https://img.shields.io/badge/License-MIT-blue)
 
-Dayflow is a modern **Human Resource Management System (HRMS)** built during a hackathon to streamline employee management, attendance tracking, leave approvals, and payroll visibility — all in one fast and clean platform.
-
----
-
-## ✨ Key Features
-
-- 🔐 **Secure Authentication** – Role-based access (Admin / HR / Employee)
-- 👥 **Employee Management** – Centralized employee profiles
-- ⏱ **Attendance Tracking** – Daily & weekly check-in / check-out
-- 🏖 **Leave Management** – Apply, approve, reject with live status
-- 💰 **Payroll Visibility** – Transparent salary view (read-only for employees)
-- 🛠 **Admin Dashboard** – Full HR control & approvals
+> **Dayflow** is a full‑stack HRMS built during a hackathon to manage employees, HR workflows, attendance, leave approvals, payroll visibility, and role‑based access in a single unified platform.
 
 ---
 
-## 👤 User Roles
-
-### Employee
-- View & update profile (limited fields)
-- Mark attendance
-- Apply for leave
-- Track leave status
-- View payroll details
-
-### Admin / HR
-- Manage employees
-- View all attendance records
-- Approve / reject leave requests
-- Manage payroll data
+## ✨ Highlights
+- Role‑based dashboards (Employee / HR / Admin)
+- JWT authentication with backend‑enforced RBAC
+- Dynamic, editable profile cards
+- Attendance tracking & leave management
+- Clean MERN architecture (React + Express + MongoDB Atlas)
+- Demo‑ready UI, production‑ready backend
 
 ---
 
-## 🛠 Tech Stack
-
-### Frontend
-- React.js  
-- Tailwind CSS  
-
-### Backend
-- Node.js  
-- Express.js  
-
-### Database
-- PostgreSQL  
+## 🎯 Objectives
+- Centralize HR and employee operations  
+- Secure authentication & authorization  
+- Clean frontend–backend separation  
+- Scalable, real‑world architecture  
 
 ---
 
-## 🧠 System Highlights
+## 👥 User Roles & Permissions
 
-- Role-based dashboards  
-- Approval workflows  
-- Clean UI with Tailwind CSS  
-- Scalable backend architecture  
-- Real-world HR use case  
+| Role | Capabilities |
+|---|---|
+| **Employee** | Attendance, Leave Requests, Profile, Payroll |
+| **HR** | Employee Management, Leave Approval, Attendance |
+| **Admin** | Full HR access + system control |
+
+> Access is enforced on **frontend and backend** using JWT and role middleware.
 
 ---
 
-## ⚙️ Getting Started
+## 🧱 Architecture
 
+```
+Frontend (React + Vite)
+ ├─ Role-based routing
+ ├─ Protected routes
+ ├─ Context API (Auth)
+ └─ Reusable UI components
+
+Backend (Node + Express)
+ ├─ JWT Authentication
+ ├─ Role-based Authorization Middleware
+ ├─ REST APIs
+ └─ MongoDB Atlas (Cloud)
+```
+
+---
+
+## 🖥 Tech Stack
+
+**Frontend**
+- React (Vite)
+- React Router DOM
+- Context API
+- Responsive CSS
+
+**Backend**
+- Node.js
+- Express.js
+- MongoDB Atlas
+- Mongoose
+- JWT, bcrypt
+- dotenv, cors
+
+---
+
+## 📁 Project Structure
+
+```
+frontend/
+ └─ src/
+
+backend/
+ ├─ src/
+ │  ├─ config/
+ │  ├─ controllers/
+ │  ├─ middleware/
+ │  ├─ models/
+ │  ├─ routes/
+ │  ├─ app.js
+ │  └─ server.js
+ └─ package.json
+```
+
+---
+
+## 🔗 API Endpoints
+
+**Auth**
+- POST `/api/auth/register`
+- POST `/api/auth/login`
+
+**Profile**
+- GET `/api/profile/me`
+- PUT `/api/profile/me`
+
+**Attendance**
+- POST `/api/attendance`
+- GET `/api/attendance`
+
+**Leave**
+- POST `/api/leave`
+- GET `/api/leave`
+- PUT `/api/leave/:id` (HR/Admin)
+
+---
+
+## ⚙️ Environment Variables
+
+```env
+PORT=5000
+MONGO_URI=mongodb+srv://<username>:<password>@cluster.mongodb.net/dayflow
+JWT_SECRET=dayflow_secret_key
+```
+
+> Never commit `.env` to version control.
+
+---
+
+## 🚀 Run Locally
+
+**Backend**
 ```bash
-# Clone the repository
-git clone https://github.com/nancy325/Dayflow-OdooxGCET.git
-
-# Navigate to project directory
-cd Dayflow-OdooxGCET
-
-# Install dependencies
+cd backend
 npm install
-
-# Start development server
 npm run dev
+```
+
+**Frontend**
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+---
+
+## 🔐 Security
+- JWT authentication
+- Password hashing with bcrypt
+- Role‑based authorization middleware
+- Protected frontend routes
+
+---
+
+## 🏆 Highlights
+- Built end‑to‑end under time constraints
+- Real‑world RBAC implementation
+- Cloud database (MongoDB Atlas)
+- Demo‑ready with scalable backend
+
+---
+
+## 📜 License
+MIT License © Dayflow
